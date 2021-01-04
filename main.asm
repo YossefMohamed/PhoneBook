@@ -1,7 +1,7 @@
-include    c:\Irvine\Irvine32.inc
-includelib c:\Irvine\irvine32.lib
-includelib c:\Irvine\kernel32.lib
-includelib y:\masm32\lib\user32.lib
+include    \Irvine\Irvine32.inc
+includelib \Irvine\irvine32.lib
+includelib \Irvine\kernel32.lib
+includelib \masm32\lib\user32.lib
 
 
 .data
@@ -16,7 +16,9 @@ msgMoreNumber byte "More Numbers? (y) or (n)"
 contacts DWORD 100 DUP(?);array of conects
 messageName byte  "Please Enter The Name !",0
 messageNumber byte "Please Enter the Number !",0
-check byte ?
+messageNoNumber byte "There's no numbers !!",0
+check byte 0,0
+current byte 0,0
 
 
 
@@ -90,10 +92,16 @@ check byte ?
 			je  take_number
 			jmp take_operation_to_do
 		display_numbers:
-			cmp
-			jmp quit
+			cmp NumWeAt ,0
+			je  no_numbers
+			jmp quite
 
 
+		no_numbers:
+			lea edx , messageNoNumber
+			call writeString
+			jmp  take_operation_to_do
+				
 	
 
 		search_number:

@@ -1,7 +1,9 @@
-include    c:\Irvine\Irvine32.inc
-includelib c:\Irvine\irvine32.lib
-includelib c:\Irvine\kernel32.lib
-includelib y:\masm32\lib\user32.lib
+include    \Irvine\Irvine32.inc
+includelib \Irvine\irvine32.lib
+includelib \Irvine\kernel32.lib
+includelib \masm32\lib\user32.lib
+
+
 .data
 OpsTitle byte   "1-remove a number 2-add number 3-display all numbers 4-search for a number"
 OpsNo	byte	?
@@ -10,9 +12,9 @@ NumWeAt  dword 0
 buffer BYTE 21 DUP(0)
 byteCount DWORD ? 
 input DWORD ?
-contects DWORD 100 DUP(?);array of conects
+contacts DWORD 100 DUP(?);array of conects
 messageName byte  "Please Enter The Name !"
-messageNumber byte "Please Enter the Name !"
+messageNumber byte "Please Enter the Number !"
 check byte ?
 
 
@@ -51,14 +53,24 @@ check byte ?
 		add_number:
 						
 		;take String in array using buffer
-		mov   edx,0
+;take the name
 		lea   edx, messageName
 		call  writeString
 		mov   edx, OFFSET buffer
 		mov   ecx, SIZEOF buffer
 		call  ReadString
 		mov   byteCount, eax
-		lea   eax , contects
+		lea   eax , contacts
+		add   eax, NumWeAt
+		mov	  eax , offset buffer
+;take the number
+		lea   edx, messageName
+		call  writeString
+		mov   edx, OFFSET buffer
+		mov   ecx, SIZEOF buffer
+		call  ReadString
+		mov   byteCount, eax
+		lea   eax , contacts
 		add   eax, NumWeAt
 		mov	  eax , offset buffer
 

@@ -4,116 +4,104 @@ includelib \Irvine\kernel32.lib
 includelib \masm32\lib\user32.lib
 
 
-.data
-OpsTitle byte   "1-remove a number 2-add number 3-display all numbers 4-search for a number 5-End",0
-OpsNo	byte	?
-message byte "hey Bro",0
-NumWeAt  dword 0,0
-buffer BYTE 21 DUP(0)
-byteCount DWORD ? 
-input DWORD ?
-msgMoreNumber byte "More Numbers? (y) or (n)"
-contacts DWORD 100 DUP(?);array of conects
-messageName byte  "Please Enter The Name !",0
-messageNumber byte "Please Enter the Number !",0
-messageNoNumber byte "There's no numbers !!",0
-check byte 0,0
-current byte 0,0
+.DATA
 
+    arrayptr    DWORD OFFSET array
+    array       BYTE 4096 DUP (?)
+    mes1        BYTE 10, "1-add number 2-display all numbers 3-remove a number 4-search for a number 5-quit", 0
+    check byte 0,0
+   ; mes1        BYTE 10, "press 1 to add an element, 2 to print, 3 to quit    ", 0
+   yourName  byte "Name : ",0
+   number byte "Number : ",0
+    mesToTakeName byte "Enter Your Name !",0
+    mesToTakeNumber byte "Enter Your Number !",0
+    msgMoreNumber byte "More Numbers? (y) or (n)"
+.CODE
 
-
-;write==>edx         read==>eax
-
-		.code
-		main PROC
-	take_operation_to_do:
-		;take the operation number
-		lea edx,OpsTitle
-		call writestring
-		call	CrLf
-		call readint
-		mov OpsNo, al
-
-		
-	; Redirection to the  the needed operation
-		cmp OpsNo , 1                          
-		je remove_number 
-		cmp OpsNo , 2                          
-		je add_number 
-		cmp OpsNo , 3                          
-		je display_numbers
-		cmp OpsNo , 4                          
-		je search_number 
-		jmp quit
-		
-
-		; "1-remove a number 2-add number 3-display all numbers 4-search for a number"
-
-		remove_number:
-
-			jmp quit
-			
-			;write==>edx         read==>eax
-
-		add_number:
-						
-		;take String in array using buffer
-;take the name
-		lea   edx, messageName
-		call  writeString
-		call	CrLf
-		mov   edx, OFFSET buffer
-		mov   ecx, SIZEOF buffer
-		call  ReadString
-		mov   byteCount, eax
-		lea   eax , contacts
-		add   eax, NumWeAt
-		mov	  eax , offset buffer
-;take the number
-		take_number:
-			lea   edx, messageNumber
-			call  writeString
-			call	CrLf
-			mov   edx, OFFSET buffer
-			mov   ecx, SIZEOF buffer
-			call  ReadString
-			mov   byteCount, eax
-			lea   eax , contacts
-			add   eax, NumWeAt
-			mov	  eax , offset buffer
-
-		;end 
-			lea edx, msgMoreNumber
+readin PROC
+    lea   edx, mesToTakeName
+	call  writeString
+	call	CrLf
+    mov edx, arrayptr           ; Argument for ReadString: Pointer to memory
+    mov ecx, 10                 ; Argument for ReadString: maximal number of chars
+    call ReadString             ; Doesn't change EDX
+    test eax, eax               ; EAX == 0 (got no string)
+    jz done                     ; Yes: don't store a new arrayptr
+    lea edx, [edx+eax+1]        ; EDX += EAX + 1
+    mov arrayptr, edx           ; New pointer, points to the byte where the next string should begin
+    take_number:
+            lea   edx, mesToTakeNumber
+	        call  writeString
+	        call	CrLf
+            mov edx, arrayptr           ; Argument for ReadString: Pointer to memory
+            mov ecx, 10                 ; Argument for ReadString: maximal number of chars
+            call ReadString             ; Doesn't change EDX
+            test eax, eax               ; EAX == 0 (got no string)
+            jz done                     ; Yes: don't store a new arrayptr
+            lea edx, [edx+eax+1]        ; EDX += EAX + 1
+            mov arrayptr, edx           ; New pointer, points to the byte where the next string should begin
+            lea edx, msgMoreNumber
 			call writestring
 			call	CrLf
 			call readchar
 			mov check , al
 			cmp check , 79h
 			je  take_number
-			jmp take_operation_to_do
-		display_numbers:
-			cmp NumWeAt ,0
-			je  no_numbers
-			jmp quite
+            
+    done:
+    ret
+readin ENDP
 
 
-		no_numbers:
-			lea edx , messageNoNumber
-			call writeString
-			jmp  take_operation_to_do
-				
-	
-
-		search_number:
-			lea edx , OpsNo
-			call writeString
-			call	CrLf
-			jmp quit
 
 
-	quit:
-		call	CrLf
-		exit	
+print PROC
+    lea edx, array              ; Points to the first string
+    L1:
+    cmp edx, arrayptr           ; Does it point beyond the strings?
+    jae done                    ; Yes -> break
 
+    call WriteString            ; Doesn't change EDX
+    call Crlf                   ; Doesn't change EDX
+
+    scan_for_null:
+    inc edx
+    cmp BYTE PTR [edx], 0       ; Terminating null?
+    jne scan_for_null           ; no -> next character
+    inc edx                     ; Pointer to next string
+
+    jmp L1
+
+    done:
+    ret
+print ENDP
+
+main PROC
+start:
+    lea edx, mes1
+    call WriteString
+    call ReadDec
+    cmp eax, 1
+    je add1
+    cmp eax, 2
+    je print2
+    cmp eax, 5
+    je stop
+    jmp next                    ; This was missing in the OP
+
+add1:
+    call readin
+    jmp next                    ; Just a better name than in the OP
+
+print2:
+    call print
+    jmp next                    ; Just a better name than in the OP
+
+next:                           ; Just a better name than in the OP
+    jmp start
+
+stop:
+    exit
 main ENDP
+
 END main

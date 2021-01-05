@@ -21,7 +21,7 @@ includelib \masm32\lib\user32.lib
 .CODE
 
 
-readin PROC
+add PROC
     lea   edx, mesToTakeName
 	call  writeString
 	call	CrLf
@@ -53,7 +53,7 @@ readin PROC
             
     done:
     ret
-readin ENDP
+add ENDP
 
     
 
@@ -106,7 +106,7 @@ start:
 
 
 add1:
-    call readin
+    call add
     jmp next                    ; Just a better name than in the OP
 
 

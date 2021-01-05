@@ -1,8 +1,9 @@
-include    \Irvine\Irvine32.inc
-includelib \Irvine\irvine32.lib
-includelib \Irvine\kernel32.lib
+include    G:\IrvineAss\Irvine\Irvine32.inc
+includelib G:\IrvineAss\Irvine\irvine32.lib
+includelib G:\IrvineAss\Irvine\kernel32.lib
 includelib \masm32\lib\user32.lib
 
+		; .data is used for declaring and defining variables
 
 .DATA
 
@@ -21,7 +22,7 @@ includelib \masm32\lib\user32.lib
 .CODE
 
 
-add PROC
+readin PROC
     lea   edx, mesToTakeName
 	call  writeString
 	call	CrLf
@@ -53,7 +54,7 @@ add PROC
             
     done:
     ret
-add ENDP
+readin ENDP
 
     
 
@@ -106,7 +107,7 @@ start:
 
 
 add1:
-    call add
+    call readin
     jmp next                    ; Just a better name than in the OP
 
 
@@ -124,7 +125,6 @@ next:                           ; Just a better name than in the OP
 
 stop:
     exit
-
 
 main ENDP
 

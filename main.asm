@@ -10,13 +10,16 @@ includelib \masm32\lib\user32.lib
     array       BYTE 4096 DUP (?)
     mes1        BYTE 10, "1-add number 2-display all numbers 3-remove a number 4-search for a number 5-quit", 0
     check byte 0,0
-   ; mes1        BYTE 10, "press 1 to add an element, 2 to print, 3 to quit    ", 0
-   yourName  byte "Name : ",0
-   number byte "Number : ",0
+    ; mes1        BYTE 10, "press 1 to add an element, 2 to print, 3 to quit    ", 0
+    yourName  byte "Name : ",0
+    number byte "Number : ",0
     mesToTakeName byte "Enter Your Name !",0
     mesToTakeNumber byte "Enter Your Number !",0
     msgMoreNumber byte "More Numbers? (y) or (n)"
+
+
 .CODE
+
 
 readin PROC
     lea   edx, mesToTakeName
@@ -52,6 +55,11 @@ readin PROC
     ret
 readin ENDP
 
+    
+
+
+
+
 
 
 
@@ -76,6 +84,12 @@ print PROC
     ret
 print ENDP
 
+
+
+
+
+
+
 main PROC
 start:
     lea edx, mes1
@@ -89,19 +103,29 @@ start:
     je stop
     jmp next                    ; This was missing in the OP
 
+
+
 add1:
     call readin
     jmp next                    ; Just a better name than in the OP
+
+
+
 
 print2:
     call print
     jmp next                    ; Just a better name than in the OP
 
+
+
 next:                           ; Just a better name than in the OP
     jmp start
 
+
 stop:
     exit
+
+
 main ENDP
 
 END main

@@ -6,7 +6,7 @@ includelib \masm32\lib\user32.lib
 
 .DATA
 
-    arrayptr    DWORD OFFSET array
+    ;arrayptr    DWORD OFFSET array
     array       BYTE 4096 DUP (?)
     mes1        BYTE 10, "1-add number 2-display all numbers 3-remove a number 4-search for a number 5-quit", 0
     check byte 0,0

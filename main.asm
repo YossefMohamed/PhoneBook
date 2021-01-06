@@ -9,14 +9,18 @@ includelib \masm32\lib\user32.lib
 
     arrayptr    DWORD OFFSET array
     array       BYTE 4096 DUP (?)
-    mes1        BYTE 10, "1-add number 2-display all numbers 3-remove a number 4-search for a number 5-quit", 0
+    mes1        BYTE 10, "1-add number 2-display all numbers 3-remove a number 4-search for a number 5-search for a name 6-quit", 0
     check byte 0,0
     ; mes1        BYTE 10, "press 1 to add an element, 2 to print, 3 to quit    ", 0
     yourName  byte "Name : ",0
     number byte "Number : ",0
     mesToTakeName byte "Enter Your Name !",0
     mesToTakeNumber byte "Enter Your Number !",0
-    msgMoreNumber byte "More Numbers? (y) or (n)"
+    msgMoreNumber byte "More Numbers? (y) or (n)" ,0
+    numToSearch byte "Enter The Number",0
+    num        DWORD  0,0
+    msgNumFound  byte "Number is Found",0
+    msgNumNotFound  byte "Number is not Found",0
 
 
 .CODE

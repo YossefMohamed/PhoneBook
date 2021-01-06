@@ -50,7 +50,7 @@ readin PROC
     mov ecx, 20                 ; Argument for ReadString: maximal number of chars
     call ReadString             ; Doesn't change EDX
     test eax, eax               ; EAX == 0 (got no string)
-    jz done                     ; Yes: don't store a new arrayptr
+    jz zero_name                     ; Yes: don't store a new arrayptr
     lea edx, [edx+eax+1]        ; EDX += EAX + 1
     mov arrayptr, edx           ; New pointer, points to the byte where the next string should begin
         take_number:
@@ -64,7 +64,7 @@ readin PROC
             call ReadString             ; Doesn't change EDX
             inc     maxNum
             test eax, eax               ; EAX == 0 (got no string)
-            jz done                     ; Yes: don't store a new arrayptr
+            jz filling                     ; Yes: don't store a new arrayptr
             lea edx, [edx+eax+1]        ; EDX += EAX + 1
             mov arrayptr, edx           ; New pointer, points to the byte where the next string should begin
             lea edx, msgMoreNumber
@@ -98,9 +98,14 @@ maxNumFunc:
             mov    maxNum , 0
             jmp done
 
+zero_name :
+        lea edx, [edx-1-1]          ; EDX += EAX + 1
+        mov arrayptr, edx           ; New pointer, points to the byte where the next string should 
+    
+
             
     done:
-    ret
+        ret
 readin ENDP
 
 

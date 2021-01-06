@@ -104,6 +104,8 @@ start:
     je add1
     cmp eax, 2
     je print2
+    cmp eax, 4
+    je search2
     cmp eax, 5
     je stop
     jmp next                    ; This was missing in the OP
@@ -122,6 +124,10 @@ print2:
     jmp next                    ; Just a better name than in the OP
 
 
+search2:
+    call  searchNumber
+    jmp next
+    
 
 next:                           ; Just a better name than in the OP
     jmp start

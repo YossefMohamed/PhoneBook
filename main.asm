@@ -99,7 +99,33 @@ searchNumber PROC
     ;MOV num , edx
     lea EDI , array
     MOV CX,4096 ;load counter
+     looping:
+    CMP edx , [EDI]
+    je FOUND
+    INC  EDI
+    DEC  cx
+    jmp looping
 
+
+    MOV EAX,OFFSET array ;address data
+    MOV ebx , 3
+    Div ebx
+    MOV EDI,EDX ;remainder moved to DI
+    MOV CX,2 ;load counter
+    XOR AL,AL ;clear AL
+    REPNE SCASB
+    STD ;auto-decrement
+
+    
+
+FOUND:
+    lea   edx, msgNumFound 
+	call  writeString
+	call	CrLf
+notFOUND:
+    lea   edx, msgNumNotFound 
+	call  writeString
+	call	CrLf
 searchNumber ENDP
 
 

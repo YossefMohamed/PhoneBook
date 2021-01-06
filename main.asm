@@ -90,7 +90,17 @@ print PROC
 print ENDP
 
 
+searchNumber PROC
+    lea   edx, numToSearch ; mov edx, offset numToSearch
+	call  writeString
+	call	CrLf
+    mov ecx, 10 
+    call ReadString  ;EDX has the number
+    ;MOV num , edx
+    lea EDI , array
+    MOV CX,4096 ;load counter
 
+searchNumber ENDP
 
 
 
